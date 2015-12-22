@@ -59,7 +59,8 @@
         <h2 class="form-signin-heading">Amigo Secreto</h2>
         <input class="input-block-level" ng-model="pessoaCtrl.novo.nome" placeholder="Nome" required type="text">
         <button class="btn btn-large btn-primary" type="submit">Adicionar</button>
-		<div>Já cadastrados:
+		<h2 style="color:red">{{pessoaCtrl.codigo}}</h2>
+		<div>Quem vai participar:
 		<ul><li>{{pessoaCtrl.novo.nome}}</li>
 			<li ng-repeat="pessoa in pessoaCtrl.pessoas | orderBy:'nome'">
 				{{pessoa.nome}}

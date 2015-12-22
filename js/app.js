@@ -1,31 +1,36 @@
 (function() {
   var app = angular.module('amigoSecreto', []);
 
-  app.controller('PessoasController',['$http', function($http){
+  app.controller('PessoasController', function($http){
 	 var me = this;
 	 
-	 this.pessoas = [];
+	this.pessoas = [];
 	this.novo = {};
+	this.codigo = "";
 	this.add = function(){
 		this.novo.id = 0;
 		this.novo.sorteado = "";
-		this.pessoas.push(this.novo);
+		
+		$http.post('cadastrar',{"nome":this.novo.nome}).success(function(data){
+		me.codigo = "Codigo:"+data.codigo; 
+		 me.pessoas = data.pessoas; 
+		});
+		
 		this.novo = {};
 		
-		
 	}
-	 
-	 $http.get('/pessoas/').success(function(data){
-		 me.pessoas = data;
-		 
+	
+	this.buscar = function(){
+		$http.get('buscar').success(function(data){
+		 me.pessoas = data; 
 	 });
+	};
+	
+	
+	
 	 
-	/* $http.post('/pessoas/cadastrar',{pessoa:'value'}).success(function(data){
-		
-		 
-	 });*/
+	this.buscar();
     
   });
 
-
-}])();
+})();

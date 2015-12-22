@@ -1,8 +1,8 @@
 <?php
 $loader = require __DIR__ . '/vendor/autoload.php';
 
-use Professore\Entity\User;
-use Professore\Resource\UserResource;
+use AmigoSecreto\Conn;
+
 
 $app = new \Slim\Slim ();
 $app->get ( '/hello/:name', function ($name) {
@@ -10,43 +10,51 @@ $app->get ( '/hello/:name', function ($name) {
 } );
 
 $app->get ( '/', function () {
-	echo "Hello";
+	$app = \Slim\Slim::getInstance ();
+	$app->redirect("index.html");
 } );
-$user = new User ();
 
-/*
- * Recursos
- */
-$userResource = new UserResource ();
-$professorResource = new ProfessorResource ();
-$alunoResource = new AlunoResource ();
-$aulaResource = new AulaResource ();
 /*
  * ROUTES
  */
-$app->get ( '/users(/(:id)(/))', function ($id = null) use($userResource) {
-	echo $userResource->get ( $id );
-} );
+$app->post ( '/cadastrar(/)', function () {
+	$app = \Slim\Slim::getInstance ();
+	$request = $app->request();
+	$body = $request->getBody();
+	$json = json_decode($body);
+	$codigo = "";
+	for($i=0;$i<4;$i++){
+		$a= rand(0,35);
 
-$app->post ( '/users', function () use($userResource) {
-	echo $userResource->post ();
+	if($a>9){
+		$a = chr($a-10+65);
+	}
+	$codigo.=$a;
+	}
+	$sql = "insert into pessoa (nome,codigo) values ('".$json->nome."','$codigo');";
+	$conn = new Conn();
+	$conn->Conecta();
+	$result = $conn->Executa($sql);
+	$result2 = $conn->grav("select * from pessoa;");
+	$conn->Desconecta();
+	echo json_encode(array("codigo"=>$codigo,"pessoas"=>$result2));
 } );
-
-$app->get ( '/professor(/(:id)(/))', function ($id = null) use($userResource) {
-	echo $userResource->get ( $id );
+$app->get ( '/buscar(/)', function () {
+	$conn = new Conn();
+	$conn->Conecta();
+	$result = $conn->grav("select * from pessoa;");
+	$conn->Desconecta();
+	echo json_encode($result);
 } );
-
-$app->post ( '/profesor', function () use($userResource) {
-	echo $userResource->post ();
+$app->post ( '/sortear(/)', function () {
+	echo "{\"todo\":\"yes\"}";
 } );
-$app->delete('/professor/:id(/))', function ($id ) use($professorResource) {
-	echo $userResource->get ( $id );
-} );
-
-$app->put('/professor/:id(/))', function ($id ) use($professorResource) {
-	echo $userResource->get ( $id );
+$app->post ( '/sorteado(/)', function () {
+	echo "{\"todo\":\"yes\"}";
 } );
 
 $app->run ();
+
+
 
 
