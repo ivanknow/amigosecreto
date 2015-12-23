@@ -46,11 +46,41 @@ $app->get ( '/buscar(/)', function () {
 	$conn->Desconecta();
 	echo json_encode($result);
 } );
-$app->post ( '/sortear(/)', function () {
-	echo "{\"todo\":\"yes\"}";
+$app->get ( '/sortear(/)', function () {
+	$conn = new Conn();
+	$conn->Conecta();
+	$result = $conn->grav("select * from pessoa;");
+	$conn->Desconecta();
+	$sorteados = $result;
+$conn = new Conn();	
+$conn->Conecta();	
+
+    foreach ($result as $key => $value) {
+        while($result[$key]['nome']==$sorteados[$key]['nome'] || isset($sorteados[$key]['jafoi'])){
+        shuffle($sorteados);        
+        }
+        
+        $sorteados[$key]['jafoi'] = true;
+        
+        $result[$key]['sorteado']=$sorteados[$key]['nome'];
+        $sql = "update pessoa set sorteado ='".$result[$key]['sorteado']."' where id = ".$value['id']." ;";
+      	
+	$conn->Executa($sql);
+	    }
+    
+
+	
+	$conn->Desconecta();
+    
+	echo "OK";
 } );
-$app->post ( '/sorteado(/)', function () {
-	echo "{\"todo\":\"yes\"}";
+$app->get ( '/sorteado(/:codigo)', function ($codigo) {
+		$conn = new Conn();
+	$conn->Conecta();
+	$result = $conn->grav("select * from pessoa where codigo = '$codigo';");
+	$conn->Desconecta();
+	echo json_encode($result);
+	
 } );
 
 $app->run ();
