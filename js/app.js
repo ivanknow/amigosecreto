@@ -32,5 +32,20 @@
 	this.buscar();
     
   });
+  
+  
+   app.controller('SorteadoController', function($http){
+	 var me = this;
+	 this.pessoa = {nome:"",codigo:"",sorteado:""};
+	 this.codigo = "";
+	    this.getSorteado = function(){
+		
+		$http.get('sorteado/'+me.codigo).success(function(data){
+		me.pessoa = data[0]; 
+		});
+		
+	}
+	
+  });
 
 })();

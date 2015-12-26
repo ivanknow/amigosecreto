@@ -5,7 +5,7 @@ class Conn
 {
 	/*A seguir se encontram os paramatros que sao usados para fazer a conexao com o Mysql*/
 	private $user = "root";
-	private $password = "";
+	private $password = "know100188";
 	private $host = "localhost";
 	private $database = "amigosecreto";
 	/*Essa variavel guarda as consultas que servico feitas no banco*/
