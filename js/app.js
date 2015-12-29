@@ -11,7 +11,7 @@
 		this.novo.id = 0;
 		this.novo.sorteado = "";
 		
-		$http.post('cadastrar',{"nome":this.novo.nome}).success(function(data){
+		$http.post('api/cadastrar',{"nome":this.novo.nome}).success(function(data){
 		me.codigo = "Codigo:"+data.codigo; 
 		 me.pessoas = data.pessoas; 
 		});
@@ -21,7 +21,7 @@
 	}
 	
 	this.buscar = function(){
-		$http.get('buscar').success(function(data){
+		$http.get('api/buscar').success(function(data){
 		 me.pessoas = data; 
 	 });
 	};
@@ -40,7 +40,7 @@
 	 this.codigo = "";
 	    this.getSorteado = function(){
 		
-		$http.get('sorteado/'+me.codigo).success(function(data){
+		$http.get('api/sorteado/'+me.codigo).success(function(data){
 		me.pessoa = data[0]; 
 		});
 		

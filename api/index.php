@@ -11,7 +11,7 @@ $app->get ( '/hello/:name', function ($name) {
 
 $app->get ( '/', function () {
 	$app = \Slim\Slim::getInstance ();
-	$app->redirect("index.html");
+	$app->redirect("../index.html");
 } );
 
 /*
